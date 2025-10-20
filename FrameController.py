@@ -48,6 +48,15 @@ class FrameController:
         name = button.accessibleName()
         pos = name.split("-")
         pos = (int(pos[0]), int(pos[1]))
+
+        # if the maze is predrawn change the maze name to Custom Maze bc it is not predrawn anymore
+        if self.model.preDrawnedMaze:
+            self.model.preDrawnedMaze = False
+            self.model.maze_name = ""
+            self.view.maze_combobox.currentIndexChanged.disconnect()
+            self.view.maze_combobox.setCurrentIndex(0)
+            self.view.maze_combobox.currentIndexChanged.connect(self.load_predrawn_maze)
+
         if self.model.placingBlock == A:
             if self.model.placeOfA != (-1, -1): # if A is already placed
                 self.view.squareButtons[self.model.get_str(self.model.placeOfA)].setStyleSheet(styles.styleWall)
