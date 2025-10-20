@@ -32,9 +32,8 @@ class FrameController:
 
     def assign_command_to_squares(self):
         for squareButton in self.view.squareButtons.values():
-            key = squareButton.accessibleName()
             squareButton.clicked.connect(
-                lambda: self.change_square_button(self.view.squareButtons[key]))
+                lambda checked=True, btn=squareButton: self.change_square_button(btn))
 
     def enable_square_buttons(self):
         for i in self.view.squareButtons.keys():
@@ -61,29 +60,30 @@ class FrameController:
             if self.model.placeOfA != (-1, -1): # if A is already placed
                 self.view.squareButtons[self.model.get_str(self.model.placeOfA)].setStyleSheet(styles.styleWall)
                 self.view.squareButtons[self.model.get_str(self.model.placeOfA)].setText("")
-            self.view.squareButtons[name].setText("A")
-            self.view.squareButtons[name].setStyleSheet(styles.styleA)
+            button.setText("A")
+            button.setStyleSheet(styles.styleA)
             self.model.place_A(pos[0], pos[1])
         elif self.model.placingBlock == B:
             if self.model.placeOfB != (-1, -1): # if B is already placed
                 self.view.squareButtons[self.model.get_str(self.model.placeOfB)].setStyleSheet(styles.styleWall)
                 self.view.squareButtons[self.model.get_str(self.model.placeOfB)].setText("")
-            self.view.squareButtons[name].setText("B")
-            self.view.squareButtons[name].setStyleSheet(styles.styleB.format("orange"))
+            button.setText("B")
+            button.setStyleSheet(styles.styleB.format("orange"))
             self.model.place_B(pos[0], pos[1])
         elif self.model.placingBlock == WALL:
-            if (self.view.squareButtons[name].palette().window().color().name() == "#808080" or button.text() == 'A'
+            print("here")
+            if (button.palette().window().color().name() == "#808080" or button.text() == 'A'
                     or button.text() == "B"):
-                self.view.squareButtons[name].setStyleSheet(styles.styleEmpty)
+                print("in wall")
+                button.setStyleSheet(styles.styleEmpty)
                 self.model.place_empty(pos[0], pos[1])
             else:
-                self.view.squareButtons[name].setStyleSheet(styles.styleWall)
+                print("in empty")
+                button.setStyleSheet(styles.styleWall)
                 self.model.place_wall(pos[0], pos[1])
 
     def setup_buttons(self):
-        for button in self.view.squareButtons.values():
-            button.clicked.connect(
-                lambda checked, arg=button: self.change_square_button(arg))
+
         self.view.buttons["Place A"].clicked.connect(self.placeA)
         self.view.buttons["Place B"].clicked.connect(self.placeB)
         self.view.buttons["Place/Remove Walls"].clicked.connect(self.place_walls)
