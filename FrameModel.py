@@ -22,6 +22,7 @@ class FrameModel:
         self.placingBlock = WALL
         self.preDrawnedMaze = False
         self.maze_name = ""
+        print("here")
 
     def reset(self, rows=7, columns=7):
         self.rows = rows
@@ -132,6 +133,7 @@ class FrameModel:
                 self.placeOfB = (maze["end"]["x"], maze["end"]["y"])
                 self.preDrawnedMaze = True
                 self.maze_name = name
+                print("loaded", self.preDrawnedMaze, self.maze_name)
                 return
     
     def get_all_predrawn_maze_names(self) -> list[str]:

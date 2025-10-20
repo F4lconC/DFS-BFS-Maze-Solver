@@ -22,8 +22,9 @@ class FrameController:
     def reset(self, rows=7, columns=7):
         self.view.reset(rows, columns)
         self.model.reset(rows, columns)
-        print(self.view.buttons)
+        self.setup_all_connections()
 
+    def setup_all_connections(self):
         self.assign_command_to_squares()
         self.enable_square_buttons()
         self.setup_buttons()
@@ -90,11 +91,13 @@ class FrameController:
         names = self.get_predrawn_maze_names()
         for i in names:
             self.view.maze_combobox.addItem(i)
+        print("pre", self.model.preDrawnedMaze)
         if self.model.preDrawnedMaze:
+            print(self.model.maze_name)
             index = self.view.maze_combobox.findText(self.model.maze_name)
             if index != -1:
                 self.view.maze_combobox.setCurrentIndex(index)
-
+            print(index)
         self.view.maze_combobox.currentIndexChanged.connect(self.load_predrawn_maze)
 
     def get_predrawn_maze_names(self):
@@ -123,8 +126,10 @@ class FrameController:
         
         name = self.view.maze_combobox.currentText()
         rows= columns = self.model.get_row_from_name(name)
-        self.reset(rows, columns)
+        self.view.reset(rows, columns)
+        self.model.reset(rows, columns)
         self.model.load_maze_from_file(name)
+        self.setup_all_connections()
         maze = self.model.maze
 
         for i in range(self.model.rows):
