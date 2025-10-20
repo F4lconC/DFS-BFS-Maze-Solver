@@ -187,7 +187,7 @@ class FrameController:
         loop.exec_()
 
     def showSolution(self, solution: list):
-        for i in solution:
+        for i in solution[:-2]:
             self.view.squareButtons[str(i[0]) + "-" + str(i[1])].setStyleSheet(styles.styleYellow)
             self.sleep(5)
         self.view.squareButtons[str(self.model.placeOfB[0]) + "-" + str(self.model.placeOfB[1])].setStyleSheet(styles.styleB.format("green"))
